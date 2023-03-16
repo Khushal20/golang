@@ -1,0 +1,11 @@
+package routers
+
+import (
+	"Beego/controllers"
+	"github.com/astaxie/beego"
+)
+
+func init() {
+    beego.Router("/", &controllers.MainController{})
+	beego.Router("/users", &controllers.UserController{}, "get:GetUsers")
+}
