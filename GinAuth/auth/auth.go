@@ -25,13 +25,13 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-var users = map[string]string{
+var Users = map[string]string{
 	"khushal": "password",
 	"knagori": "Test123.",
 }
 
 func Auth(user LoginUser) (string, error) {
-	password, ok := users[user.UserName]
+	password, ok := Users[user.UserName]
 	if !ok {
 		logger.Fatal("Invalid user", user.UserName)
 		return "", fmt.Errorf("Invalid user %v", user.UserName)
@@ -39,7 +39,7 @@ func Auth(user LoginUser) (string, error) {
 	if password != user.Password {
 		logger.Fatal("Invalid password", user.UserName)
 	}
-	exp := time.Now().Add(time.Second * 2)
+	exp := time.Now().Add(time.Minute * 10)
 	claim := &Claims{
 		Username: user.UserName,
 		StandardClaims: jwt.StandardClaims{

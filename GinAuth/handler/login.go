@@ -19,12 +19,31 @@ func Login(ctx *gin.Context) {
 	ctx.AbortWithStatusJSON(http.StatusOK, auth.Resposne{Message: token})
 }
 
+func ValidateAPi(ctx *gin.Context) {
+	Validate(ctx)
+	ctx.AbortWithStatus(http.StatusOK)
+}
+
 func Validate(ctx *gin.Context) {
 	bearer := ctx.GetHeader("Authorization")
 	token := strings.ReplaceAll(bearer, "Bearer ", "")
-	resposne, err := auth.Validate(token)
+	_, err := auth.Validate(token)
 	if err != nil {
-		ctx.AbortWithError(http.StatusBadRequest, err)
+		ctx.AbortWithError(http.StatusUnauthorized, err)
 	}
-	ctx.AbortWithStatusJSON(http.StatusOK, resposne)
+	ctx.Next()
+}
+
+type User struct{
+	UserName string `json:"name"`
+	Password string `json:"password"`
+}
+
+
+func Userget(ctx *gin.Context) {
+	var users []User
+	for un, pass := range auth.Users{
+		users = append(users, User{UserName: un, Password: pass})
+	}
+	ctx.AbortWithStatusJSON(http.StatusOK, users)
 }
