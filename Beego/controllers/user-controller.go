@@ -37,3 +37,16 @@ func (controller *UserController) PostUser() {
 	controller.Data["json"] = users
 	controller.ServeJSON()
 }
+
+func (controller *UserController) GetUser() {
+	controller.Ctx.ResponseWriter.WriteHeader(http.StatusOK)
+	username := controller.Ctx.Input.Param(":username")
+	var userans User
+	for _, user := range users {
+		user.FirstName = username
+		userans = user
+		break	
+	}
+	controller.Data["json"] = userans
+	controller.ServeJSON()
+}
