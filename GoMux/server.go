@@ -10,8 +10,13 @@ import (
 	"github.com/gorilla/mux"
 )
 
+var logger = log.Default()
 func main() {
-	db := repository.InitDB()
+	db, err := repository.InitDB()
+	if err!=nil{
+		logger.Print(err.Error())
+		return
+	}
 
 	service := service.New(db)
 	userController:= controller.New(service)
