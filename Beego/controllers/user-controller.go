@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/astaxie/beego"
@@ -24,6 +25,15 @@ func init() {
 
 func (controller *UserController) GetUsers() {
 	controller.Ctx.ResponseWriter.WriteHeader(http.StatusOK)
+	controller.Data["json"] = users
+	controller.ServeJSON()
+}
+
+func (controller *UserController) PostUser() {
+	controller.Ctx.ResponseWriter.WriteHeader(http.StatusOK)
+	var user User
+	json.Unmarshal(controller.Ctx.Input.RequestBody, &user)
+	users = append(users, user)
 	controller.Data["json"] = users
 	controller.ServeJSON()
 }
