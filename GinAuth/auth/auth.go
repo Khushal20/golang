@@ -9,7 +9,7 @@ import (
 )
 
 var key = []byte("TestKey")
-var logger = &log.Logger{}
+var logger = log.Default()
 
 type LoginUser struct {
 	UserName string `json:"username"`
@@ -79,4 +79,9 @@ func validator(tokenString string, claim *Claims) (*jwt.Token, error) {
 		}
 		return key, nil
 	})
+}
+
+
+func Add(user LoginUser){
+	Users[user.UserName] = user.Password;
 }

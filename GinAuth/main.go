@@ -13,6 +13,7 @@ func main() {
 
 	public.POST("/login", handler.Login)
 	public.GET("/validate", handler.Validate)
+	public.POST("/user", handler.UserPost)
 
 	protectedUser:= router.Group("/api/")
 	protectedUser.Use(handler.Validate)

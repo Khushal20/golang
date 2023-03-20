@@ -34,16 +34,17 @@ func Validate(ctx *gin.Context) {
 	ctx.Next()
 }
 
-type User struct{
-	UserName string `json:"name"`
-	Password string `json:"password"`
-}
-
-
 func Userget(ctx *gin.Context) {
-	var users []User
-	for un, pass := range auth.Users{
-		users = append(users, User{UserName: un, Password: pass})
+	var users []auth.LoginUser
+	for un, pass := range auth.Users {
+		users = append(users, auth.LoginUser{UserName: un, Password: pass})
 	}
 	ctx.AbortWithStatusJSON(http.StatusOK, users)
+}
+
+func UserPost(ctx *gin.Context) {
+	var user auth.LoginUser
+	ctx.BindJSON(&user)
+	auth.Add(user)
+	ctx.AbortWithStatusJSON(http.StatusOK, user)
 }
